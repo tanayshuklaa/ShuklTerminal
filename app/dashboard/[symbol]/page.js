@@ -6,6 +6,7 @@ import InsiderTradesTable from '../../components/InsiderTradesTable';
 import NewsFeed from '../../components/NewsFeed';
 import RatingCard from '../../components/RatingCard';
 import SignalCard from '../../components/SignalCard';
+import SavedTickers from '../../components/SavedTickers';
 import { getQuote, getCompanyNews, getInsiderTransactions, getRecommendations } from '../../../lib/finnhub';
 import { getYahooChart, getYahooFinancials } from '../../../lib/yahoo';
 
@@ -19,7 +20,7 @@ async function loadData(symbol) {
       getCompanyNews(symbol),
       getRecommendations(symbol),
       getYahooFinancials(symbol),
-      getYahooChart(symbol, '6mo', '1d'),
+      getYahooChart(symbol, '1y', '1d'),
     ]);
 
     return { quote, insiderRaw, newsRaw, recommendationsRaw, financialsRaw, history };
@@ -29,9 +30,14 @@ async function loadData(symbol) {
   }
 }
 
-function buildOverview(symbol, quote, financialsRaw) {
+function buildOverview(symbol, quote, financialsRaw, history) {
   if (!quote) return null;
   const finNode = financialsRaw?.quoteSummary?.result?.[0]?.financialData || {};
+  const chartResult = history?.chart?.result?.[0];
+  const chartMeta = chartResult?.meta || {};
+  const closes = chartResult?.indicators?.quote?.[0]?.close?.filter((v) => Number.isFinite(v)) || [];
+  const computed52High = closes.length ? Math.max(...closes) : null;
+  const computed52Low = closes.length ? Math.min(...closes) : null;
   const price = quote.c;
   const prevClose = quote.pc;
   const change = price && prevClose ? price - prevClose : null;
@@ -46,8 +52,8 @@ function buildOverview(symbol, quote, financialsRaw) {
     low: quote.l,
     open: quote.o,
     prevClose,
-    fiftyTwoWeekHigh: finNode?.fiftyTwoWeekHigh?.raw,
-    fiftyTwoWeekLow: finNode?.fiftyTwoWeekLow?.raw,
+    fiftyTwoWeekHigh: finNode?.fiftyTwoWeekHigh?.raw || chartMeta?.fiftyTwoWeekHigh || computed52High,
+    fiftyTwoWeekLow: finNode?.fiftyTwoWeekLow?.raw || chartMeta?.fiftyTwoWeekLow || computed52Low,
     marketCap: finNode?.marketCap?.raw,
   };
 }
@@ -96,7 +102,7 @@ function computeSignal({ insiderStats, analyst, smaResult }) {
 export default async function DashboardPage({ params }) {
   const symbol = params.symbol.toUpperCase();
   const { quote, insiderRaw, newsRaw, recommendationsRaw, financialsRaw, history } = await loadData(symbol);
-  const overview = buildOverview(symbol, quote, financialsRaw);
+  const overview = buildOverview(symbol, quote, financialsRaw, history);
   const insiderStats = deriveInsiderStats(insiderRaw);
   const analyst = deriveAnalyst(recommendationsRaw);
   const smaResult = computeSMA(history);
@@ -110,6 +116,7 @@ export default async function DashboardPage({ params }) {
         <div className="card p-4">
           <SearchBar initialSymbol={symbol} />
         </div>
+        <SavedTickers currentSymbol={symbol} />
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">

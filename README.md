@@ -1,14 +1,15 @@
-# Shukl Terminal – Bloomberg-style Stock Dashboard
+# Shukla Terminal – Real-Time Stock Dashboard
 
-Modern, free dashboard for U.S. equities built with **Next.js 14**, **TailwindCSS**, **Recharts**, and powered by **Finnhub** + **Yahoo Finance** free endpoints. Designed for Vercel edge deployment with 60s caching.
+Modern dashboard for U.S. equities built with **Next.js 14**, **TailwindCSS**, **Recharts**, and powered by **Finnhub** + **Yahoo Finance** free endpoints. Designed for Vercel edge deployment with 60s caching.
 
 ## Features
 - Live quote overview (price, % change, 52W stats, market cap)
-- Interactive price history chart with 1D/1W/1M/3M/6M/1Y ranges (Yahoo Finance)
+- Interactive price history chart with 1D/1W/1M/3M/6M/1Y ranges (Yahoo Finance) and line/candlestick views
 - Insider trading tape (Finnhub insider transactions)
 - Curated company news feed (Finnhub company news)
 - Analyst sentiment meter (Finnhub recommendations)
 - Lightweight buy/hold/sell signal combining insider flow, analyst sentiment, and 50-day SMA
+- Personal saved tickers for one-click access to dashboards
 - Dark, responsive UI with loading skeletons and graceful error fallbacks
 
 ## Getting Started

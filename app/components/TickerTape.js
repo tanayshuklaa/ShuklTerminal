@@ -15,7 +15,9 @@ export default function TickerTape({ symbols = DEFAULT_SYMBOLS }) {
             const res = await fetch(`/api/stock/${symbol}`);
             if (!res.ok) throw new Error('quote failed');
             const data = await res.json();
-            return { symbol, price: data?.c ?? null, change: data?.c && data?.pc ? data.c - data.pc : null };
+            const change = data?.c && data?.pc ? data.c - data.pc : null;
+            const changePercent = change && data?.pc ? (change / data.pc) * 100 : null;
+            return { symbol, price: data?.c ?? null, change, changePercent };
           })
         );
         setQuotes(results.filter(Boolean));
@@ -37,7 +39,9 @@ export default function TickerTape({ symbols = DEFAULT_SYMBOLS }) {
       <div className="ticker-track">
         {[...quotes, ...quotes].map((quote, idx) => {
           const changeColor = quote.change > 0 ? 'text-green-400' : quote.change < 0 ? 'text-red-400' : 'text-gray-200';
-          const changeLabel = quote.change ? `${quote.change > 0 ? '+' : ''}${quote.change.toFixed(2)}` : '—';
+          const changeLabel = quote.change
+            ? `${quote.change > 0 ? '+' : ''}${quote.change.toFixed(2)} (${quote.changePercent?.toFixed(2) ?? '0'}%)`
+            : '—';
           return (
             <div key={`${quote.symbol}-${idx}`} className="ticker-item">
               <span className="font-semibold">{quote.symbol}</span>

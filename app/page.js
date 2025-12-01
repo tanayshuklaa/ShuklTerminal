@@ -10,8 +10,7 @@ export default function Home() {
       <div className="container py-12 space-y-10">
         <section className="grid gap-8 lg:grid-cols-2 items-center">
           <div className="space-y-6">
-            <p className="text-accent text-sm font-semibold">Bloomberg-style dashboard</p>
-            <h1 className="text-4xl font-bold leading-tight">Free, Real-Time Stock Intelligence</h1>
+            <h1 className="text-4xl font-bold leading-tight">Shukla Terminal Stock Intelligence</h1>
             <p className="text-gray-300 text-lg">
               Search any ticker to view live quotes, analyst sentiment, insider trading, price history, and curated news powered by Finnhub and Yahoo Finance.
             </p>

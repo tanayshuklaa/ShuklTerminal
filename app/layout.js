@@ -4,8 +4,8 @@ import dynamic from 'next/dynamic';
 const TickerTape = dynamic(() => import('./components/TickerTape'), { ssr: false });
 
 export const metadata = {
-  title: 'Shukla Terminal | Bloomberg-Style Stock Dashboard',
-  description: 'Free stock intelligence dashboard powered by Finnhub and Yahoo Finance',
+  title: 'Shukla Terminal | Real-Time Stock Dashboard',
+  description: 'Real-time stock intelligence dashboard powered by Finnhub and Yahoo Finance',
 };
 
 export default function RootLayout({ children }) {
