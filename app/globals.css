@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.container {
+  @apply max-w-6xl mx-auto px-4;
+}
+
+.card {
+  @apply bg-surface rounded-xl shadow-card border border-white/5;
+}
+
+.badge {
+  @apply inline-flex items-center px-2 py-1 rounded-md text-xs font-semibold bg-white/10 text-white;
+}
+
+input::placeholder {
+  color: #9ca3af;
+}
+
+.loading-pulse {
+  @apply animate-pulse bg-white/10 rounded;
+}
